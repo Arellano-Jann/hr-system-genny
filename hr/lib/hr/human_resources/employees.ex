@@ -4,9 +4,9 @@ defmodule Hr.HumanResources.Employees do
 
   schema "employee" do
     field :dep, :string
+    field :empid, :string
     field :first, :string
     field :hire, :date
-    field :id, :string
     field :last, :string
 
     timestamps()
@@ -15,7 +15,7 @@ defmodule Hr.HumanResources.Employees do
   @doc false
   def changeset(employees, attrs) do
     employees
-    |> cast(attrs, [:id, :last, :first, :hire, :dep])
-    |> validate_required([:id, :last, :first, :hire, :dep])
+    |> cast(attrs, [:empid, :last, :first, :hire, :dep])
+    |> validate_required([:empid, :last, :first, :hire, :dep])
   end
 end

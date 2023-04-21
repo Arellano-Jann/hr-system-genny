@@ -17,7 +17,7 @@ config :hr, Hr.Repo,
 # you can enable the server option below.
 config :hr, HrWeb.Endpoint,
   http: [ip: {127, 0, 0, 1}, port: 4002],
-  secret_key_base: "rfJqykTIXr92kR1ZqVb3woeVBJeAB9AJAQrM78xyaslOhLcZBWufgKLOVfwyomff",
+  secret_key_base: "K/LRHHg9AOzpsoSLB7aPbFVMQUY12n+5k9cSIDmzTY9I/faPUWPXqmy3H1iMenSx",
   server: false
 
 # In test we don't send emails.

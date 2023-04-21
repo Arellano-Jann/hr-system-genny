@@ -23,7 +23,7 @@ config :hr, HrWeb.Endpoint,
   check_origin: false,
   code_reloader: true,
   debug_errors: true,
-  secret_key_base: "iYjNLvCTrojZKmJXyWRDeEy/pNqBYbxIVYAmmj2JRO8Xz//kJPKpSMq642stwt3Q",
+  secret_key_base: "L+ndNiNX6RlJhRYuRwSNFFYaGHft9T827XqXFuICq3x+ht9EXVpzXW7NT+XJidMI",
   watchers: [
     esbuild: {Esbuild, :install_and_run, [:default, ~w(--sourcemap=inline --watch)]},
     tailwind: {Tailwind, :install_and_run, [:default, ~w(--watch)]}

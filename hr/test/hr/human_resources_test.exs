@@ -8,7 +8,7 @@ defmodule Hr.HumanResourcesTest do
 
     import Hr.HumanResourcesFixtures
 
-    @invalid_attrs %{dep: nil, first: nil, hire: nil, id: nil, last: nil}
+    @invalid_attrs %{dep: nil, empid: nil, first: nil, hire: nil, last: nil}
 
     test "list_employee/0 returns all employee" do
       employees = employees_fixture()
@@ -21,13 +21,13 @@ defmodule Hr.HumanResourcesTest do
     end
 
     test "create_employees/1 with valid data creates a employees" do
-      valid_attrs = %{dep: "some dep", first: "some first", hire: ~D[2023-04-20], id: "some id", last: "some last"}
+      valid_attrs = %{dep: "some dep", empid: "some empid", first: "some first", hire: ~D[2023-04-20], last: "some last"}
 
       assert {:ok, %Employees{} = employees} = HumanResources.create_employees(valid_attrs)
       assert employees.dep == "some dep"
+      assert employees.empid == "some empid"
       assert employees.first == "some first"
       assert employees.hire == ~D[2023-04-20]
-      assert employees.id == "some id"
       assert employees.last == "some last"
     end
 
@@ -37,13 +37,13 @@ defmodule Hr.HumanResourcesTest do
 
     test "update_employees/2 with valid data updates the employees" do
       employees = employees_fixture()
-      update_attrs = %{dep: "some updated dep", first: "some updated first", hire: ~D[2023-04-21], id: "some updated id", last: "some updated last"}
+      update_attrs = %{dep: "some updated dep", empid: "some updated empid", first: "some updated first", hire: ~D[2023-04-21], last: "some updated last"}
 
       assert {:ok, %Employees{} = employees} = HumanResources.update_employees(employees, update_attrs)
       assert employees.dep == "some updated dep"
+      assert employees.empid == "some updated empid"
       assert employees.first == "some updated first"
       assert employees.hire == ~D[2023-04-21]
-      assert employees.id == "some updated id"
       assert employees.last == "some updated last"
     end
 

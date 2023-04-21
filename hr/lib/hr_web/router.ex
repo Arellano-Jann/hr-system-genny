@@ -17,14 +17,14 @@ defmodule HrWeb.Router do
   scope "/", HrWeb do
     pipe_through :browser
     resources "/employee", EmployeesController
-
     get "/", PageController, :home
   end
 
   # Other scopes may use custom stacks.
-  # scope "/api", HrWeb do
-  #   pipe_through :api
-  # end
+  scope "/api", HrWeb do
+    resources "/employee", EmployeesController, except: [:new, :edit]
+    pipe_through :api
+  end
 
   # Enable LiveDashboard and Swoosh mailbox preview in development
   if Application.compile_env(:hr, :dev_routes) do

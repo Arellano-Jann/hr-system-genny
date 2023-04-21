@@ -3,7 +3,7 @@ defmodule Hr.Repo.Migrations.CreateEmployee do
 
   def change do
     create table(:employee) do
-      add :id, :string
+      add :empid, :string
       add :last, :string
       add :first, :string
       add :hire, :date

@@ -3,64 +3,80 @@ defmodule HrWeb.EmployeesControllerTest do
 
   import Hr.HumanResourcesFixtures
 
-  @create_attrs %{dep: "some dep", first: "some first", hire: ~D[2023-04-20], id: "some id", last: "some last"}
-  @update_attrs %{dep: "some updated dep", first: "some updated first", hire: ~D[2023-04-21], id: "some updated id", last: "some updated last"}
-  @invalid_attrs %{dep: nil, first: nil, hire: nil, id: nil, last: nil}
+  alias Hr.HumanResources.Employees
+
+  @create_attrs %{
+    dep: "some dep",
+    empid: "some empid",
+    first: "some first",
+    hire: ~D[2023-04-20],
+    last: "some last"
+  }
+  @update_attrs %{
+    dep: "some updated dep",
+    empid: "some updated empid",
+    first: "some updated first",
+    hire: ~D[2023-04-21],
+    last: "some updated last"
+  }
+  @invalid_attrs %{dep: nil, empid: nil, first: nil, hire: nil, last: nil}
+
+  setup %{conn: conn} do
+    {:ok, conn: put_req_header(conn, "accept", "application/json")}
+  end
 
   describe "index" do
     test "lists all employee", %{conn: conn} do
-      conn = get(conn, ~p"/employee")
-      assert html_response(conn, 200) =~ "Listing Employee"
-    end
-  end
-
-  describe "new employees" do
-    test "renders form", %{conn: conn} do
-      conn = get(conn, ~p"/employee/new")
-      assert html_response(conn, 200) =~ "New Employees"
+      conn = get(conn, ~p"/api/employee")
+      assert json_response(conn, 200)["data"] == []
     end
   end
 
   describe "create employees" do
-    test "redirects to show when data is valid", %{conn: conn} do
-      conn = post(conn, ~p"/employee", employees: @create_attrs)
+    test "renders employees when data is valid", %{conn: conn} do
+      conn = post(conn, ~p"/api/employee", employees: @create_attrs)
+      assert %{"id" => id} = json_response(conn, 201)["data"]
 
-      assert %{id: id} = redirected_params(conn)
-      assert redirected_to(conn) == ~p"/employee/#{id}"
+      conn = get(conn, ~p"/api/employee/#{id}")
 
-      conn = get(conn, ~p"/employee/#{id}")
-      assert html_response(conn, 200) =~ "Employees #{id}"
+      assert %{
+               "id" => ^id,
+               "dep" => "some dep",
+               "empid" => "some empid",
+               "first" => "some first",
+               "hire" => "2023-04-20",
+               "last" => "some last"
+             } = json_response(conn, 200)["data"]
     end
 
     test "renders errors when data is invalid", %{conn: conn} do
-      conn = post(conn, ~p"/employee", employees: @invalid_attrs)
-      assert html_response(conn, 200) =~ "New Employees"
-    end
-  end
-
-  describe "edit employees" do
-    setup [:create_employees]
-
-    test "renders form for editing chosen employees", %{conn: conn, employees: employees} do
-      conn = get(conn, ~p"/employee/#{employees}/edit")
-      assert html_response(conn, 200) =~ "Edit Employees"
+      conn = post(conn, ~p"/api/employee", employees: @invalid_attrs)
+      assert json_response(conn, 422)["errors"] != %{}
     end
   end
 
   describe "update employees" do
     setup [:create_employees]
 
-    test "redirects when data is valid", %{conn: conn, employees: employees} do
-      conn = put(conn, ~p"/employee/#{employees}", employees: @update_attrs)
-      assert redirected_to(conn) == ~p"/employee/#{employees}"
+    test "renders employees when data is valid", %{conn: conn, employees: %Employees{id: id} = employees} do
+      conn = put(conn, ~p"/api/employee/#{employees}", employees: @update_attrs)
+      assert %{"id" => ^id} = json_response(conn, 200)["data"]
 
-      conn = get(conn, ~p"/employee/#{employees}")
-      assert html_response(conn, 200) =~ "some updated dep"
+      conn = get(conn, ~p"/api/employee/#{id}")
+
+      assert %{
+               "id" => ^id,
+               "dep" => "some updated dep",
+               "empid" => "some updated empid",
+               "first" => "some updated first",
+               "hire" => "2023-04-21",
+               "last" => "some updated last"
+             } = json_response(conn, 200)["data"]
     end
 
     test "renders errors when data is invalid", %{conn: conn, employees: employees} do
-      conn = put(conn, ~p"/employee/#{employees}", employees: @invalid_attrs)
-      assert html_response(conn, 200) =~ "Edit Employees"
+      conn = put(conn, ~p"/api/employee/#{employees}", employees: @invalid_attrs)
+      assert json_response(conn, 422)["errors"] != %{}
     end
   end
 
@@ -68,11 +84,11 @@ defmodule HrWeb.EmployeesControllerTest do
     setup [:create_employees]
 
     test "deletes chosen employees", %{conn: conn, employees: employees} do
-      conn = delete(conn, ~p"/employee/#{employees}")
-      assert redirected_to(conn) == ~p"/employee"
+      conn = delete(conn, ~p"/api/employee/#{employees}")
+      assert response(conn, 204)
 
       assert_error_sent 404, fn ->
-        get(conn, ~p"/employee/#{employees}")
+        get(conn, ~p"/api/employee/#{employees}")
       end
     end
   end

@@ -12,9 +12,9 @@ defmodule Hr.HumanResourcesFixtures do
       attrs
       |> Enum.into(%{
         dep: "some dep",
+        empid: "some empid",
         first: "some first",
         hire: ~D[2023-04-20],
-        id: "some id",
         last: "some last"
       })
       |> Hr.HumanResources.create_employees()

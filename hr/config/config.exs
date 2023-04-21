@@ -18,7 +18,7 @@ config :hr, HrWeb.Endpoint,
     layout: false
   ],
   pubsub_server: Hr.PubSub,
-  live_view: [signing_salt: "9kn5GRl5"]
+  live_view: [signing_salt: "+MuLHv5R"]
 
 # Configures the mailer
 #

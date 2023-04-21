@@ -7,7 +7,7 @@ defmodule HrWeb.Endpoint do
   @session_options [
     store: :cookie,
     key: "_hr_key",
-    signing_salt: "z047H5nP",
+    signing_salt: "boh5YO82",
     same_site: "Lax"
   ]
 

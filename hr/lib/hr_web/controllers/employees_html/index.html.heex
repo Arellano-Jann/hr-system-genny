@@ -1,0 +1,27 @@
+<.header>
+  Listing Employee
+  <:actions>
+    <.link href={~p"/employee/new"}>
+      <.button>New Employees</.button>
+    </.link>
+  </:actions>
+</.header>
+
+<.table id="employee" rows={@employee} row_click={&JS.navigate(~p"/employee/#{&1}")}>
+  <:col :let={employees} label="Id"><%= employees.id %></:col>
+  <:col :let={employees} label="Last"><%= employees.last %></:col>
+  <:col :let={employees} label="First"><%= employees.first %></:col>
+  <:col :let={employees} label="Hire"><%= employees.hire %></:col>
+  <:col :let={employees} label="Dep"><%= employees.dep %></:col>
+  <:action :let={employees}>
+    <div class="sr-only">
+      <.link navigate={~p"/employee/#{employees}"}>Show</.link>
+    </div>
+    <.link navigate={~p"/employee/#{employees}/edit"}>Edit</.link>
+  </:action>
+  <:action :let={employees}>
+    <.link href={~p"/employee/#{employees}"} method="delete" data-confirm="Are you sure?">
+      Delete
+    </.link>
+  </:action>
+</.table>
